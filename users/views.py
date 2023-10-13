@@ -2,7 +2,8 @@ import random
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import login
 from django.shortcuts import get_object_or_404
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 from .serializers import *
@@ -37,3 +38,10 @@ def authorization_api_view(request):
     login(request, user)
     token, created = Token.objects.get_or_create(user=user)
     return Response({'token': token.key})
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def logout(request):
+    request.user.auth_token.delete()
+    return Response({'message': 'You have been successfully logged out.'}, status=HTTP_200_OK)
