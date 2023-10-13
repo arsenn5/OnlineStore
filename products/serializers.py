@@ -5,7 +5,7 @@ from .models import Category, Product, Review, Tag
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = '__all__'
+        fields = ('id', 'name')
 
 
 class CategorySerializers(serializers.ModelSerializer):
@@ -13,7 +13,7 @@ class CategorySerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = 'id name products_count'.split()
+        fields = ('id', 'name', 'products_count')
 
     def get_products_count(self, obj):
         return obj.products.count()
@@ -24,20 +24,20 @@ class ProductSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = 'id title description price category tag'.split()
+        fields = ('id', 'title', 'description', 'price', 'category', 'tag')
 
-    def validate_tags(self, value):
-        existing_tags = Tag.objects.values_list('id', flat=True)
+    def validate_tag(self, value):
         for tag_id in value:
-            if tag_id not in existing_tags:
-                raise serializers.ValidationError(f"Tag with ID {tag_id} does not exist.")
+            try:
+                Tag.objects.get(id=tag_id)
+            except Tag.DoesNotExist as e:
+                raise serializers.ValidationError(str(e))
         return value
-
 
 class ReviewSerializers(serializers.ModelSerializer):
     class Meta:
         model = Review
-        fields = 'id text product stars'.split()
+        fields = ('id', 'text', 'product', 'stars')
 
 
 class ProductReviewSerializers(serializers.ModelSerializer):
@@ -54,4 +54,4 @@ class ProductReviewSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id', 'title', 'description', 'price', 'category', 'is_active', 'reviews', 'average_rating']
+        fields = ('id', 'title', 'description', 'price', 'category', 'is_active', 'reviews', 'average_rating')
