@@ -8,7 +8,7 @@ class TagSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
-class CategorySerializers(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     products_count = serializers.SerializerMethodField()
 
     class Meta:
@@ -19,7 +19,7 @@ class CategorySerializers(serializers.ModelSerializer):
         return obj.products.count()
 
 
-class ProductSerializers(serializers.ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
     tag = TagSerializer(many=True, read_only=True)
 
     class Meta:
@@ -34,14 +34,14 @@ class ProductSerializers(serializers.ModelSerializer):
                 raise serializers.ValidationError(str(e))
         return value
 
-class ReviewSerializers(serializers.ModelSerializer):
+class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ('id', 'text', 'product', 'stars')
 
 
-class ProductReviewSerializers(serializers.ModelSerializer):
-    reviews = ReviewSerializers(many=True, read_only=True)
+class ProductReviewSerializer(serializers.ModelSerializer):
+    reviews = ReviewSerializer(many=True, read_only=True)
     average_rating = serializers.SerializerMethodField()
 
     def get_average_rating(self, obj):

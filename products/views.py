@@ -3,18 +3,18 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from products.models import Product, Category, Review
-from products.serializers import ProductSerializers, CategorySerializers, ReviewSerializers, ProductReviewSerializers
+from products.serializers import ProductSerializer, CategorySerializer, ReviewSerializer, ProductReviewSerializer
 
 
 @api_view(['GET', 'POST'])
 def product_list_api_view(request):
     if request.method == 'GET':
         queryset = Product.objects.prefetch_related('tag').all()
-        serializer = ProductSerializers(queryset, many=True)
+        serializer = ProductSerializer(queryset, many=True)
         return Response(serializer.data, status.HTTP_200_OK)
 
     elif request.method == 'POST':
-        serializer = ProductSerializers(data=request.data)
+        serializer = ProductSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status.HTTP_201_CREATED)
@@ -27,10 +27,10 @@ def product_detail_api_view(request, id):
     except Product.DoesNotExist:
         return Response(status.HTTP_404_NOT_FOUND)
     if request.method == 'GET':
-        serializer = ProductSerializers(queryset)
+        serializer = ProductSerializer(queryset)
         return Response(serializer.data, status.HTTP_200_OK)
     elif request.method == "PUT":
-        serializer = ProductSerializers(queryset, data=request.data)
+        serializer = ProductSerializer(queryset, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status.HTTP_200_OK)
@@ -43,10 +43,10 @@ def product_detail_api_view(request, id):
 def category_list_api_view(request):
     if request.method == "GET":
         queryset = Category.objects.all()
-        serializer = CategorySerializers(queryset, many=True)
+        serializer = CategorySerializer(queryset, many=True)
         return Response(serializer.data, status.HTTP_200_OK)
     elif request.method == "POST":
-        serializer = CategorySerializers(data=request.data)
+        serializer = CategorySerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status.HTTP_201_CREATED)
@@ -59,10 +59,10 @@ def category_detail_api_view(request, id):
     except Category.DoesNotExist:
         return Response(status.HTTP_404_NOT_FOUND)
     if request.method == 'GET':
-        serializer = CategorySerializers(queryset)
+        serializer = CategorySerializer(queryset)
         return Response(serializer.data, status.HTTP_200_OK)
     elif request.method == "PUT":
-        serializer = CategorySerializers(queryset, data=request.data)
+        serializer = CategorySerializer(queryset, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status.HTTP_200_OK)
@@ -75,10 +75,10 @@ def category_detail_api_view(request, id):
 def review_list_api_view(request):
     if request.method == "GET":
         queryset = Review.objects.all()
-        serializer = ReviewSerializers(queryset, many=True)
+        serializer = ReviewSerializer(queryset, many=True)
         return Response(serializer.data, status.HTTP_200_OK)
     elif request.method == 'POST':
-        serializer = ReviewSerializers(data=request.data)
+        serializer = ReviewSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status.HTTP_201_CREATED)
@@ -91,10 +91,10 @@ def review_detail_api_view(request, id):
     except Review.DoesNotExist:
         return Response(status.HTTP_404_NOT_FOUND)
     if request.method == 'GET':
-        serializer = ReviewSerializers(queryset)
+        serializer = ReviewSerializer(queryset)
         return Response(serializer.data, status.HTTP_200_OK)
     elif request.method == 'PUT':
-        serializer = ReviewSerializers(queryset, data=request.data)
+        serializer = ReviewSerializer(queryset, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status.HTTP_200_OK)
@@ -106,5 +106,5 @@ def review_detail_api_view(request, id):
 @api_view(['GET'])
 def product_review_list_api_view(request):
     queryset = Product.objects.prefetch_related('reviews').all()
-    serializer = ProductReviewSerializers(queryset, many=True)
+    serializer = ProductReviewSerializer(queryset, many=True)
     return Response(serializer.data, status.HTTP_200_OK)
