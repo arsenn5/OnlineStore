@@ -4,11 +4,11 @@ JAZZMIN_SETTINGS = {
     "site_brand": "GeekShop",
     "welcome_sign": "Welcome to GeekShop",
     "copyright": "GeekShop",
-    "search_model": ["auth.User", "auth.Group", "nza.Grammar"],
+    "search_model": ["auth.User", "auth.Group", "products.Product"],
 
     "topmenu_links": [
         {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
-        {"app": "nza"},
+        {"app": "GeekShop"},
         {"model": "auth.User"},
         {"name": "Support", "url": "https://t.me/elldiyar", "new_window": True},
     ],
