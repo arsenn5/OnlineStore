@@ -9,7 +9,7 @@ import dotenv
 def main():
     """Run administrative tasks."""
     # Load environment variables from a .env file
-    dotenv.read_dotenv()
+    dotenv.load_dotenv()
 
     # Set the default Django settings module
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'shop.settings')

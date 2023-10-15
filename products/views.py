@@ -1,5 +1,6 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 
 from products.models import Product, Category, Review
@@ -108,3 +109,38 @@ def product_review_list_api_view(request):
     queryset = Product.objects.prefetch_related('reviews').all()
     serializer = ProductReviewSerializer(queryset, many=True)
     return Response(serializer.data, status.HTTP_200_OK)
+
+
+# class ProductListAPIView(ListCreateAPIView):
+#     queryset = Product.objects.prefetch_related('tag').all()
+#     serializer_class = ProductSerializer
+#
+#
+# class ProductDetailAPIView(RetrieveUpdateDestroyAPIView):
+#     queryset = Product.objects.all()
+#     serializer_class = ProductSerializer
+#
+#
+# class CategoryListAPIView(ListCreateAPIView):
+#     queryset = Category.objects.all()
+#     serializer_class = CategorySerializer
+#
+#
+# class CategoryDetailAPIView(RetrieveUpdateDestroyAPIView):
+#     queryset = Category.objects.all()
+#     serializer_class = CategorySerializer
+#
+#
+# class ReviewListAPIView(ListCreateAPIView):
+#     queryset = Review.objects.all()
+#     serializer_class = ReviewSerializer
+#
+#
+# class ReviewDetailAPIView(RetrieveUpdateDestroyAPIView):
+#     queryset = Review.objects.all()
+#     serializer_class = ReviewSerializer
+#
+#
+# class ProductReviewListAPIView(ListCreateAPIView):
+#     queryset = Product.objects.prefetch_related('reviews').all()
+#     serializer_class = ProductReviewSerializer
