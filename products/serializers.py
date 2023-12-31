@@ -1,3 +1,4 @@
+from django.db.models import Avg
 from rest_framework import serializers
 from .models import Category, Product, Review, Tag
 
@@ -34,6 +35,7 @@ class ProductSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(str(e))
         return value
 
+
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
@@ -45,12 +47,8 @@ class ProductReviewSerializer(serializers.ModelSerializer):
     average_rating = serializers.SerializerMethodField()
 
     def get_average_rating(self, obj):
-        total_stars = sum(review.stars for review in obj.reviews.all())
-        num_reviews = obj.reviews.count()
-        if num_reviews > 0:
-            return total_stars / num_reviews
-        else:
-            return 0.0
+        average_rating = obj.reviews.aggregate(Avg('stars'))['stars__avg']
+        return average_rating
 
     class Meta:
         model = Product

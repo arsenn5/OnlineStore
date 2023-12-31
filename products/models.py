@@ -28,6 +28,7 @@ class Review(models.Model):
     def __str__(self):
         return self.text
 
+
 class Tag(models.Model):
     name = models.CharField(max_length=255)
 

@@ -50,16 +50,16 @@ def authorization_api_view(request):
         return Response({'token': token.key})
     return Response({'error': 'Invalid credentials'}, status=400)
 
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def logout(request):
-    try:
-        token = Token.objects.get(user=request.user)
-        token.delete()
-        return Response({'message': 'User logged out'}, status=status.HTTP_200_OK)
-    except Token.DoesNotExist:
-        return Response({'message': 'User is already logged out'}, status=status.HTTP_200_OK)
+#
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def logout(request):
+#     try:
+#         token = Token.objects.get(user=request.user)
+#         token.delete()
+#         return Response({'message': 'User logged out'}, status=status.HTTP_200_OK)
+#     except Token.DoesNotExist:
+#         return Response({'message': 'User is already logged out'}, status=status.HTTP_200_OK)
 
 
 # class RegistrationAPIView(APIView):
